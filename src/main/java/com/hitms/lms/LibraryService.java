@@ -1,3 +1,4 @@
+
 package com.hitms.lms;
 
 import java.util.List;
@@ -15,18 +16,27 @@ public class LibraryService {
      * @param title           the title of the book
      * @return the remaining copies after issuing one
      * @throws BookUnavailableException if availableCopies is 0
-     * @throws IllegalArgumentException if title is null or blank
+     * @throws IllegalArgumentException if title is null or blank,
+     *                                  or availableCopies is negative
      */
     public static int issueBook(int availableCopies, String title)
             throws BookUnavailableException {
+
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException(
                     "Book title must not be null or blank.");
         }
-        if (availableCopies <= 0) {
+
+        if (availableCopies < 0) {
+            throw new IllegalArgumentException(
+                    "Available copies cannot be negative.");
+        }
+
+        if (availableCopies == 0) {
             throw new BookUnavailableException(
                     "'" + title + "' has no copies available.");
         }
+
         return availableCopies - 1;
     }
 
@@ -37,17 +47,20 @@ public class LibraryService {
      * @param memberId the identifier to look for
      * @return the matching member, or empty if none is found
      */
-   public static Optional<Member> findMemberById(
-        List<Member> members, String memberId) {
-    if (members == null || memberId == null || memberId.isBlank()) {
+    public static Optional<Member> findMemberById(
+            List<Member> members, String memberId) {
+
+        if (members == null || memberId == null || memberId.isBlank()) {
+            return Optional.empty();
+        }
+
+        for (Member member : members) {
+            if (member != null && memberId.equals(member.getId())) {
+                return Optional.of(member);
+            }
+        }
+
         return Optional.empty();
     }
+}
 
-    for (Member member : members) {
-        if (member != null && memberId.equals(member.getId())) {
-            return Optional.of(member);
-        }
-    }
-
-    return Optional.empty();
-}} 
