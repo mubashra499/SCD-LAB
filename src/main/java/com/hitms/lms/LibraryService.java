@@ -41,8 +41,7 @@ public class LibraryService {
     }
 
     /**
-     * Finds a member by identifier.
-     *
+    * Finds a registered member by identifier.
      * @param members  the registered members
      * @param memberId the identifier to look for
      * @return the matching member, or empty if none is found
