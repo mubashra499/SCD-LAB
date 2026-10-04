@@ -37,31 +37,17 @@ public class LibraryService {
      * @param memberId the identifier to look for
      * @return the matching member, or empty if none is found
      */
-    public static Optional<Member> findMemberById(
-            List<Member> members, String memberId) {
-        if (members == null || memberId == null) {
-            return Optional.empty();
-        }
-        for (Member member : members) {
-            if (memberId.equals(member.getId())) {
-                return Optional.of(member);
-            }
-        }
+   public static Optional<Member> findMemberById(
+        List<Member> members, String memberId) {
+    if (members == null || memberId == null || memberId.isBlank()) {
         return Optional.empty();
     }
 
-    /**
-     * Runs a small demonstration of the library service.
-     *
-     * @param args command-line arguments
-     */
-    public static void main(String[] args) {
-        try {
-            System.out.println("Remaining copies: "
-                    + issueBook(3, "Clean Code"));
-            issueBook(0, "Clean Code");
-        } catch (BookUnavailableException e) {
-            System.out.println("Transaction failed: " + e.getMessage());
+    for (Member member : members) {
+        if (member != null && memberId.equals(member.getId())) {
+            return Optional.of(member);
         }
     }
-}
+
+    return Optional.empty();
+}} 
